@@ -70,7 +70,7 @@
 
 
       <div class="myTool">
-        <div class="">
+        <div class="" @click="toCollection">
           <i class="fa fa-star" aria-hidden="true"></i>
           <div>收藏的商品</div>
         </div>
@@ -114,7 +114,10 @@ export default {
     },
     toUserInfo(){
       this.$router.push('/userInfo')
-    }
+    },
+    toCollection(){
+      this.$router.push('/collection')
+    },
   }
 }
 </script>

@@ -12,6 +12,7 @@ import SetDesc from '@/view/user/setDesc'
 import SetSys from '@/view/user/setSys'
 import AboutShop from '@/view/user/aboutShop'
 import SetAddress from '@/view/user/setAddress'
+import Collection from '@/view/user/collection'
 
 Vue.use(Router)
 
@@ -75,6 +76,10 @@ export default new Router({
       path: '/setAddress',
       name: 'setAddress',
       component: SetAddress,
+    },{
+      path: '/collection',
+      name: 'collection',
+      component: Collection,
     }
   ]
 })

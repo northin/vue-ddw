@@ -1,8 +1,7 @@
-<template>
-  <div class="hello">
+<template lang="html">
+  <div class="">
     <x-header style="background-color:red">
-      <span>购物车</span>
-      <div slot="overwrite-left" ></div>
+      <span>我的收藏</span>
       <span slot="right" @click="modify" size="40" style="fill:#fff;position:relative;top:-2px;left:-3px;">编辑</span>
     </x-header>
     <div class="" style="">
@@ -13,11 +12,11 @@
              <div slot="right-menu">
                <swipeout-button @click.native="onButtonClickR(index)" type="warn">删除</swipeout-button>
              </div>
+             <div slot="left-menu">
+               <swipeout-button @click.native="onButtonClickL(index)" type="warn"><i class="fa fa-minus" aria-hidden="true"></i></swipeout-button>
+             </div>
              <div slot="content" class="demo-content vux-1px-t">
                  <div class="content-li">
-                    <div class="" style="    line-height: 62px;">
-                      <check-icon :value.sync="demo1"></check-icon>
-                    </div>
                      <div class="">
                        <img src="" class="content-img" alt="" style="">
                      </div>
@@ -28,13 +27,10 @@
                        <div class="">
                          ¥ <span>36.30</span>
                        </div>
-                       <div class="">
-                         *1
-                       </div>
                      </div>
                      <div class="" >
                        <x-button class="content-btn" style="width: 50%;height: 40%;margin-top: 30px;">
-                         <i class="fa fa-pencil-square-o content-i" aria-hidden="true"></i>
+                         <i class="fa fa-cart-arrow-down content-i" aria-hidden="true"></i>
                        </x-button>
                      </div>
                  </div>
@@ -45,49 +41,47 @@
 
         </swipeout>
     </div>
-    <div class="buy-div" style="display:flex">
-      <check-icon :value.sync="all" style="width:40%;text-align:left">全选</check-icon>
-      <span>合计：</span><span>¥36.50</span>
-      <x-button class="buy-btn" style="">
-        结算（0）
-      </x-button>
-    </div>
-
   </div>
+
 </template>
 
 <script>
-import { CheckIcon, XHeader,Swipeout, SwipeoutItem, SwipeoutButton ,XButton} from 'vux'
-import myfooter from '../components/myfooter.vue'
-export default {
-  name: 'index',
-  data () {
-    return {
-      msg: 'index',
-      list:[1,2],
-      demo1:false,
-      all:false
-    }
-  },
-  methods:{
-    modify(){
 
+import { XHeader,Swipeout, SwipeoutItem, SwipeoutButton, XButton } from 'vux'
+export default {
+  name: 'myCollection',
+  data(){
+    return {
+      list:[1,2]
     }
   },
-  components: {
-    myfooter,
+  components:{
     XHeader,
-    CheckIcon,
     Swipeout,
     SwipeoutItem,
     SwipeoutButton,
     XButton
+  },
+  methods:{
+    modify(){
+      // console.log(this.$refs.swipeoutItem)
+      var a = [1,2]
+      for (var i = 0; i < a.length; i++) {
+        this.$refs["swipeoutItem"+i][0].open("left");
+      }
+    },
+    onButtonClickR(index){
+      console.log(index)
+    },
+    onButtonClickL(index){
+      // console.log(this.$refs["swipeoutItem"+index])
+      this.$refs["swipeoutItem"+index][0].open("right");
+    }
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="css">
 .content-li{
   display: flex;
   border-bottom: 1px solid #ccc;
@@ -110,22 +104,5 @@ export default {
   position: absolute;
   top: 4px;
   left: 4px;
-}
-.buy-div{
-  position: relative;
-  top:53vh;
-  height: 40px;
-  line-height: 40px;
-  border-top: 1px solid #ccc;
-  /* border-bottom:1px solid #ccc; */
-}
-.buy-btn{
-  width: 120px;
-  height: 98%;
-  margin-left: 8px;
-  background-color: red;
-  border-radius: 0;
-  outline: none;
-  line-height: 38px;
 }
 </style>

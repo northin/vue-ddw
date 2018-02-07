@@ -36,7 +36,9 @@ export default {
     Badge
   },
   created:function(){
-    
+    // console.log(this.$route)
+    let urlParams = this.$route.path;
+    this.isActive = urlParams.substr(1)
   },
   methods:{
     goto:function(str){
@@ -58,7 +60,7 @@ export default {
   padding-left: 0;
   margin: 0px;
   height: 50px;
-  border-top: 1px solid #ccc;  
+  border-top: 1px solid #ccc;
 }
 .myfooter li{
   list-style: none;
