@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Index from '@/view/index'
+import IndexMain from '@/view/indexMain'
 import User from '@/view/user/user'
 import Cart from '@/view/cart'
 import Search from '@/view/search'
@@ -13,6 +14,7 @@ import SetSys from '@/view/user/setSys'
 import AboutShop from '@/view/user/aboutShop'
 import SetAddress from '@/view/user/setAddress'
 import Collection from '@/view/user/collection'
+import Detail from '@/view/detail'
 
 Vue.use(Router)
 
@@ -25,11 +27,11 @@ export default new Router({
       children:[
       	  {
 	      	path:'',
-	      	component: Index,
+	      	component: IndexMain,
 	      },
 	      {
 	      	path:'index',
-	      	component: Index,
+	      	component: IndexMain,
 	      },
 	      {
 	      	path:'user',
@@ -80,6 +82,10 @@ export default new Router({
       path: '/collection',
       name: 'collection',
       component: Collection,
+    },{
+      path: '/detail/:id',
+      name: 'detail',
+      component: Detail,
     }
   ]
 })

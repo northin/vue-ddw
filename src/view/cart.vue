@@ -14,30 +14,41 @@
                <swipeout-button @click.native="onButtonClickR(index)" type="warn">删除</swipeout-button>
              </div>
              <div slot="content" class="demo-content vux-1px-t">
+
                  <div class="content-li">
-                    <div class="" style="    line-height: 62px;">
+                    <div class="" style="line-height: 62px;">
                       <check-icon :value.sync="demo1"></check-icon>
                     </div>
-                     <div class="">
+                     <div class="" @click="toDetail(index)">
                        <img src="" class="content-img" alt="" style="">
                      </div>
-                     <div class="" style="width: 55%;text-align: left;padding-left: 28px;">
-                       <div class="">
-                         寻羊冒险记（精）{{index}}
+                     <div class="" :style="'width: 55%;text-align: left;'+(!item.isEdit?'padding-left: 28px;':'padding-right: 28px;')">
+                       <div class=""  v-if=(!item.isEdit) @click="toDetail(index)" >
+                         寻羊冒险记（精）
                        </div>
-                       <div class="">
+                       <div class=""  v-if=(!item.isEdit) @click="toDetail(index)" >
                          ¥ <span>36.30</span>
                        </div>
-                       <div class="">
-                         *1
+                       <div v-if=(!item.isEdit)>
+                         *{{ item.number }}
+                       </div>
+                       <div class="content-edit" v-if=(item.isEdit)>
+                            <x-number :min="0" width="80px" v-model="item.number"></x-number>
                        </div>
                      </div>
-                     <div class="" >
-                       <x-button class="content-btn" style="width: 50%;height: 40%;margin-top: 30px;">
+                     <div class="" v-if=(!item.isEdit)>
+                       <x-button class="content-btn" @click.native=edit(index) style="width: 50%;height: 40%;margin-top: 30px;">
                          <i class="fa fa-pencil-square-o content-i" aria-hidden="true"></i>
                        </x-button>
                      </div>
+                     <div class="" v-if=(item.isEdit)>
+                       <x-button class="content-btn" @click.native=save(index) style="width: 50%;height: 40%;margin-top: 30px;">
+                         <i class="fa fa-check content-i" aria-hidden="true"></i>
+                       </x-button>
+                     </div>
                  </div>
+
+               </a>
 
              </div>
            </swipeout-item>
@@ -57,21 +68,32 @@
 </template>
 
 <script>
-import { CheckIcon, XHeader,Swipeout, SwipeoutItem, SwipeoutButton ,XButton} from 'vux'
+import { CheckIcon, XHeader,Swipeout,XNumber, SwipeoutItem, SwipeoutButton ,XButton} from 'vux'
 import myfooter from '../components/myfooter.vue'
 export default {
   name: 'index',
   data () {
     return {
       msg: 'index',
-      list:[1,2],
+      list:[{"number":1,"isEdit":false},{"number":2,"isEdit":false}],
       demo1:false,
-      all:false
+      all:false,
+
     }
   },
   methods:{
+    toDetail(index){
+      this.$router.push('/detail/'+index)
+    },
     modify(){
 
+    },
+    edit(index){
+      this.list[index].isEdit = true;
+    },
+    save(index){
+      // console.log(this.list[index].number)
+      this.list[index].isEdit = false;
     }
   },
   components: {
@@ -81,7 +103,8 @@ export default {
     Swipeout,
     SwipeoutItem,
     SwipeoutButton,
-    XButton
+    XButton,
+    XNumber
   }
 }
 </script>
@@ -92,6 +115,7 @@ export default {
   display: flex;
   border-bottom: 1px solid #ccc;
   padding: 10px 0;
+  height: 67px;
 }
 .content-img{
   width: 50px;
