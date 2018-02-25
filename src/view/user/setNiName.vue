@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="">
-    <mySet :setTitle="'设置昵称'" @doSave=save></mySet>
+    <mySet :setTitle="'设置昵称'" :initData=initData @doSave=save></mySet>
   </div>
 </template>
 
@@ -10,12 +10,42 @@ export default {
   name: 'setNiName',
   data () {
     return {
-
+      initData:'',
     }
+  },
+  created(){
+    this.$store.dispatch("userDetail").then(res => {
+      this.initData = res.data.name;
+    })
   },
   methods:{
     save(value){
-      console.log(value)
+
+      this.$store.dispatch("userDetailUpdate",{name:value}).then(res => {
+        if(!res.data.errorCode){
+          this.$vux.alert.show({
+           title: '昵称修改',
+           content:res.data.errorMessage,
+           onShow () {
+           },
+           onHide () {
+             // self.$router.push('/index')
+           }
+          })
+
+        }else{
+          this.$vux.alert.show({
+           title: '昵称修改',
+           content:res.data.errorMessage,
+           onShow () {
+           },
+           onHide () {
+
+           }
+         })
+
+        }
+      })
     }
   },
   components:{

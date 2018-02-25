@@ -15,15 +15,20 @@ import AboutShop from '@/view/user/aboutShop'
 import SetAddress from '@/view/user/setAddress'
 import Collection from '@/view/user/collection'
 import Detail from '@/view/detail'
+import SearchDetail from '@/view/searchDetail'
+import Login from '@/view/login'
+import Register from '@/view/register'
+import store from '@/store/index'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
       name: 'index',
       component: Index,
+
       children:[
       	  {
 	      	path:'',
@@ -35,11 +40,17 @@ export default new Router({
 	      },
 	      {
 	      	path:'user',
-	      	component: User
+	      	component: User,
+          meta: {
+            requireAuth: true // 添加该字段，表示进入这个路由是需要登录的
+          },
 	      },
 	      {
 	      	path:'cart',
 	      	component: Cart,
+          meta: {
+            requireAuth: true // 添加该字段，表示进入这个路由是需要登录的
+          },
 	      },
 	      {
 	      	path:'search',
@@ -86,6 +97,40 @@ export default new Router({
       path: '/detail/:id',
       name: 'detail',
       component: Detail,
+    },{
+      path: '/searchDetail',
+      name: 'searchDetail',
+      component: SearchDetail,
+    },{
+      path: '/login',
+      name: 'login',
+      component: Login,
+    },{
+      path: '/register',
+      name: 'register',
+      component: Register,
     }
   ]
 })
+router.beforeEach((to, from, next) => {
+  let token = store.state.token;
+    //判断要去的路由有没有requiresAuth
+  // console.log(to.meta.requireAuth);
+  if(to.meta.requireAuth){
+    console.log(token)
+    if(token != 'undefined' && token != undefined){
+      next();
+    }else{
+      next({
+        path: '/login',
+        query: {redirect: to.path}  // 将跳转的路由path作为参数，登录成功后跳转到该路由
+      });
+    }
+  }else{
+    next();//如果无需token,那么随它去吧
+  }
+})
+
+
+
+export default router;

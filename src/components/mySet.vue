@@ -9,29 +9,61 @@
         <x-input :title=(setTitle.substr(2)) name="" :placeholder="('请输入'+setTitle.substr(2))" v-model="saveData" :is-type="setType"></x-input>
       </group>
     </div>
-
+    <confirm v-model="show"
+      title="确认"
+      @on-cancel="onCancel"
+      @on-confirm="onConfirm"
+      @on-show="onShow"
+      @on-hide="onHide">
+        <p style="text-align:center;">你确定修改吗?</p>
+      </confirm>
   </div>
 </template>
 
 <script>
-import { XHeader,Group,XInput} from 'vux'
+import { XHeader,Group,XInput,Confirm} from 'vux'
 export default {
   name: 'userInfo',
   data () {
     return {
-      saveData:''
+      saveDataValue:'',
+      show:false
     }
   },
-  props:['setTitle','setType'],
+  computed:{
+    saveData:{
+      get:function(){
+        return this.initData
+      },
+      set: function(v){
+        this.saveDataValue = v;
+      }
+    }
+  },
+  props:['setTitle','setType','initData'],
   methods:{
     parentC(){
-      this.$emit('doSave', this.saveData)
+      this.show = true;
+    },
+    onCancel(){
+
+    },
+    onShow(){
+
+    },
+    onHide(){
+
+    },
+    onConfirm(){
+      this.$emit('doSave', this.saveDataValue)
     }
+
   },
   components:{
     XHeader,
     Group,
-    XInput
+    XInput,
+    Confirm
   }
 }
 </script>

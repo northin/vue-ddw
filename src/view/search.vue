@@ -10,7 +10,7 @@
     @on-cancel="onCancel"
     @on-submit="onSubmit"
     ref="search"></search>
-    <flexbox>
+    <flexbox :style="isFocus?'margin-top:45px':''">
       <flexbox-item :span="1/4" class="flexbox-left">
         <div class="flex-left">
           <x-button v-for="item in searchList"> {{ item.label }} </x-button>
@@ -43,15 +43,9 @@
           <div class="search-content">
             <h4 style="padding-left:20px;">教辅书</h4>
             <div class="">
-              <span>中小学阅读</span>
-              <span>工具书</span>
-              <span>语文作文</span>
-              <span>中小学阅读</span>
-              <span>工具书</span>
-              <span>语文作文</span>
-              <span>中小学阅读</span>
-              <span>工具书</span>
-              <span>语文作文</span>
+              <span v-for="item in dataList">
+                <a :href="'#/searchDetail?data='+item.label"> {{item.label}} </a>
+              </span>
             </div>
           </div>
 
@@ -71,12 +65,20 @@ export default {
       msg: 'index',
       value:"",
       results:[],
+      isFocus:false,
       searchList:[{
         label:'猜你喜欢'
       },{
         label:'教辅'
       },{
         label:'外语'
+      },{
+        label:'工具书'
+      }],
+      dataList:[{
+        label:'中小学阅读'
+      },{
+        label:'语文作文'
       },{
         label:'工具书'
       }]
@@ -99,13 +101,13 @@ export default {
 
     },
     onFocus(){
-
+      this.isFocus = true;
     },
     onSubmit(){
 
     },
     onCancel(){
-
+      this.isFocus = false;
     }
   }
 }

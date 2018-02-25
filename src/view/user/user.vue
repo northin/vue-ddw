@@ -13,7 +13,7 @@
           <img src="" alt="">
         </div>
         <div class="userName" @click="toUserInfo">
-          张春旭
+          {{ name }}
         </div>
       </div>
 
@@ -102,7 +102,14 @@ export default {
   data () {
     return {
       msg: 'index',
+      name:'',
     }
+  },
+  created(){
+    this.$store.dispatch("userDetail").then(res => {
+      // console.log(res)
+      this.name = res.data.name
+    })
   },
   components: {
       XHeader,

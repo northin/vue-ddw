@@ -26,7 +26,7 @@
        </group>
 
        <div class="" style="margin-top:20px">
-          <x-button type="warn">退出</x-button>
+          <x-button type="warn" @click.native="loginOut">退出</x-button>
        </div>
     </div>
 
@@ -57,6 +57,32 @@ export default {
     },
     aboutShop(){
       this.$router.push('/aboutShop')
+    },
+    loginOut(){
+      this.$store.dispatch("loginOut").then(res => {
+        if(!res.data.errorCode){
+          const self = this;
+          this.$vux.alert.show({
+           title: '退出成功',
+           content:res.data.errorMessage,
+           onShow () {
+           },
+           onHide () {
+             self.$router.push('/index')
+           }
+          })
+        }else{
+          this.$vux.alert.show({
+           title: '退出失败',
+           content:res.data.errorMessage,
+           onShow () {
+           },
+           onHide () {
+
+           }
+         })
+        }
+      })
     }
   }
 }

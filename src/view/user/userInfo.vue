@@ -18,7 +18,7 @@
              <i class="fa fa-heart" aria-hidden="true"></i>
            </span>
            <div>
-             <span>淡淡的</span>
+             <span>{{ name }}</span>
            </div>
          </cell>
          <cell title="性别" is-link @click.native="setSex">
@@ -26,7 +26,7 @@
              <i class="fa fa-venus" aria-hidden="true"></i>
            </span>
            <div>
-             <span>男</span>
+             <span>{{ sex }}</span>
            </div>
          </cell>
          <cell title="个人介绍" is-link @click.native="setDesc">
@@ -88,13 +88,13 @@
     <popup v-model="showSex" @on-hide="" @on-show="">
       <div class="popupSex">
         <group>
-          <div class="popup0-div">男</div>
+          <div class="popup0-div" @click="choseSex('男')">男</div>
         </group>
         <group>
-          <div class="popup0-div">女</div>
+          <div class="popup0-div" @click="choseSex('女')">女</div>
         </group>
         <group>
-          <div class="popup0-div" @click="clearIcon">取消</div>
+          <div class="popup0-div" @click="closeSex">取消</div>
         </group>
       </div>
     </popup>
@@ -117,11 +117,13 @@ export default {
       showIcon:false,
       showSex:false,
       isBars:false,
+      name:'',
       bars:'介绍一下自己',
       isQQ:false,
       qqhao:'输入您的qq号',
       isEmail:false,
-      email:'输入您的邮箱'
+      email:'输入您的邮箱',
+      sex:''
     }
   },
   components: {
@@ -129,6 +131,16 @@ export default {
       Cell,
       Group,
       Popup
+  },
+  created(){
+    this.$store.dispatch("userDetail").then(res => {
+      this.name = res.data.name;
+      this.qqhao = res.data.qq?res.data.qq:'输入您的qq号';
+      this.email = res.data.email?res.data.email:'输入您的邮箱';
+      this.bars = res.data.intruction?res.data.intruction:'介绍一下自己';
+      // this.name = res.name;
+      this.sex = res.data.sex;
+    })
   },
   methods:{
     setNiName(){
@@ -151,6 +163,38 @@ export default {
     },
     clearIcon:function(){
       this.showIcon = false
+    },
+    closeSex(){
+      this.showSex = false;
+    },
+    choseSex(value){
+      this.showSex = false;
+      this.$store.dispatch("userDetailUpdate",{sex:value}).then(res => {
+        if(!res.data.errorCode){
+          this.sex = value;
+          this.$vux.alert.show({
+           title: '性别修改',
+           content:res.data.errorMessage,
+           onShow () {
+           },
+           onHide () {
+             // self.$router.push('/index')
+           }
+          })
+
+        }else{
+          this.$vux.alert.show({
+           title: '性别修改',
+           content:res.data.errorMessage,
+           onShow () {
+           },
+           onHide () {
+
+           }
+         })
+
+        }
+      })
     }
   }
 }
