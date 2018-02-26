@@ -13,7 +13,7 @@
     <flexbox :style="isFocus?'margin-top:45px':''">
       <flexbox-item :span="1/4" class="flexbox-left">
         <div class="flex-left">
-          <x-button v-for="item in searchList"> {{ item.label }} </x-button>
+          <x-button v-for="(item,index) in searchList" @click.native="bookType(index)"> {{ item.label }} </x-button>
           <!-- <x-button>教辅书</x-button>
           <x-button>考试</x-button>
           <x-button>外语</x-button>
@@ -41,7 +41,7 @@
           </div>
 
           <div class="search-content">
-            <h4 style="padding-left:20px;">教辅书</h4>
+            <h4 style="padding-left:20px;">{{ title }}</h4>
             <div class="">
               <span v-for="item in dataList">
                 <a :href="'#/searchDetail?data='+item.label"> {{item.label}} </a>
@@ -66,22 +66,9 @@ export default {
       value:"",
       results:[],
       isFocus:false,
-      searchList:[{
-        label:'猜你喜欢'
-      },{
-        label:'教辅'
-      },{
-        label:'外语'
-      },{
-        label:'工具书'
-      }],
-      dataList:[{
-        label:'中小学阅读'
-      },{
-        label:'语文作文'
-      },{
-        label:'工具书'
-      }]
+      searchList:[],
+      dataList:[],
+      title:''
     }
   },
   components: {
@@ -93,7 +80,45 @@ export default {
     FlexboxItem,
     XButton
   },
+  created(){
+    this.$store.dispatch("bookType").then(res=>{
+      let data = res.data;
+      for (var i = 0; i < data.length; i++) {
+        this.searchList.push({"label":data[i]["type_name"],"value":data[i]["type_id"]})
+      }
+      this.title = res.data[0]["type_name"]
+      console.log(res.data[0]["type_id"])
+      return res.data[0]["type_id"]
+
+    }).then(res=>{
+      console.log(res)
+      this.$store.dispatch("bookStyle",{"book_type":res}).then(res=>{
+        let data = res.data;
+        for (var i = 0; i < data.length; i++) {
+          this.dataList.push({"label":data[i]["style_name"],"value":data[i]["style_id"]})
+        }
+      })
+    })
+
+
+
+  },
   methods:{
+    bookType(value){
+      // console.log(value);
+      let titleData = this.searchList[value]["label"]
+      let queryData = this.searchList[value]["value"]
+      this.title = titleData;
+      this.$store.dispatch("bookStyle",{"book_type":queryData}).then(res=>{
+        let data = res.data;
+        this.dataList = [];
+        for (var i = 0; i < data.length; i++) {
+          this.dataList.push({"label":data[i]["style_name"],"value":data[i]["style_id"]})
+        }
+      })
+
+
+    },
     resultClick(){
 
     },

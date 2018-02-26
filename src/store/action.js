@@ -59,6 +59,21 @@ const actions = {
       return res;
     })
   },
+  bookType(store, data){
+    return api.bookType(data).then(res => {
+      return res;
+    })
+  },
+  bookStyle(store, data){
+    return api.bookStyle(data).then(res => {
+      return res;
+    })
+  },
+  book(store, data){
+    return api.book(data).then(res => {
+      return res;
+    })
+  },
 
 
 }

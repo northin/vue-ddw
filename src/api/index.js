@@ -99,7 +99,15 @@ export default {
     return instance.post(config.url+'/address/delete',data);
   },
 
-
+  bookType(data){
+    return instance.get(config.url+'/book/getType',data);
+  },
+  bookStyle(data){
+    return instance.post(config.url+'/book/getStyle',data);
+  },
+  book(data){
+    return instance.post(config.url+'/book/getBook',data);
+  }
 
 
 
