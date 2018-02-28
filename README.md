@@ -1,6 +1,6 @@
-# ddw
+# shop
 
-> this is a ddw on android
+> this is a shop on android
 
 ## Build Setup
 
