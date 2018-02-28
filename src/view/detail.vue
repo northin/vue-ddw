@@ -16,10 +16,10 @@
             <img src="" alt="" class='detail-img'>
           </div>
           <div class="" style="width:70%;text-align:left;padding-left:10px;background-color:#fff;padding-top:10px">
-            海边的卡夫卡（精）
+            {{ bookName }}
           </div>
           <div class="" style="width:70%;text-align:left;padding-left:10px;;padding-bottom:10px"">
-            ¥47.79
+            ¥{{ price }}
           </div>
           <div class="comment">
             <div class="" style="width:70%;text-align:left;padding-left:10px">
@@ -35,7 +35,7 @@
              <cell primary="content" title="作者" is-link @click.native="setIcon" >
                <div  class="" style="display:flex;justify-content: space-between;">
                  <div class="" >
-                   (日)村上春树
+                   {{ author }}
                  </div>
                  <div>
                     查看作品
@@ -46,7 +46,7 @@
              <cell primary="content" title="出版" is-link @click.native="setIcon" >
                <div  class="" style="display:flex;justify-content: space-between;">
                  <div class="" style="font-size:13px;">
-                    上海译文出版社，2014年05月
+                    {{ compony }}{{ date }}
                  </div>
                  <div class="">
                    查看作品
@@ -57,7 +57,7 @@
              <cell primary="content" title="分类" is-link @click.native="setIcon" >
                <div  class="" style="display:flex;justify-content: space-between;">
                  <div class="">
-                    图书>小说
+                    {{ typeData }}>{{ styleData }}
                  </div>
                </div>
 
@@ -169,6 +169,12 @@ export default {
       index:1,
       data3: 4.7,
       data4:10,
+      bookName:'',
+      price:'',
+      date:'',
+      compony:'',
+      styleData:'',
+      typeData:'',
       author:'(日)村上春树',
       detailIndex:1,
       list: [{
@@ -203,7 +209,30 @@ export default {
     }
   },
   created(){
-    console.log(this.$route.params.id)
+    let id = this.$route.params.id
+    this.$store.dispatch("bookById",{book_id:id}).then(res=>{
+      this.author = "("+res.data.country+")"+res.data.author
+      this.bookName = res.data.book_name;
+      this.price = res.data.price;
+      this.date = res.data.date;
+      this.compony = res.data.compony;
+      this.list[0].value = res.data.book_name;
+      this.list[0].value = res.data.isbn;
+      this.list[2].value = this.author
+      this.list[3].value = res.data.compony;
+      this.list[4].value = res.data.date;
+      return res.data.book_style
+    }).then(res=>{
+      return this.$store.dispatch("bookStyle",{style_id:res}).then(res=>{
+        this.styleData = res.data[0].style_name
+        return res.data[0].book_type
+      })
+    }).then(res => {
+      // console.log(res)
+      this.$store.dispatch("bookType",{type_id:res}).then(res=>{
+        this.typeData = res.data[0].type_name
+      })
+    })
   },
   methods:{
 

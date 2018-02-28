@@ -16,13 +16,16 @@
     </div>
     <div class="" style="height:93vh;overflow:auto;">
       <ul>
-        <li>
+        <li v-if="searchList.length == 0">
+          暂无数据
+        </li>
+        <li v-for="(item,index) in searchList" @click="goto(item.book_id)">
           <div class="li-content" style="display:flex">
             <img class="li-img" src="" alt="">
             <div class="">
-              <h4 style="text-align:left;">新华字典(第11版)</h4>
-              <p class="li-author">中国社会科学院语言研究生编</p>
-              <p class="li-price">¥15.00</p>
+              <h4 style="text-align:left;">{{ item.book_name }}</h4>
+              <p class="li-author">({{ item.country }}) {{ item.author }}</p>
+              <p class="li-price">¥{{ item.price }}</p>
               <p class="li-comment">100.0%好评（2022767人）</p>
             </div>
           </div>
@@ -40,7 +43,8 @@ export default {
     return {
       value:'',
       results:[],
-      isFocus:false
+      isFocus:false,
+      searchList:[],
     }
   },
   components: {
@@ -52,7 +56,19 @@ export default {
     Search
   },
   created(){
-    this.value = this.$route.query.data
+    let searchData = this.$route.query.data
+    let style_id = this.$route.query.dataId;
+
+    this.value = searchData
+
+    this.$store.dispatch("bookSearch",{book_name:searchData,author:searchData,book_style:style_id}).then(res=>{
+
+      this.searchList = res.data;
+    })
+
+
+
+
   },
   methods:{
     back(){
@@ -64,12 +80,29 @@ export default {
     getResult(){
 
     },
+    goto(value){
+      this.$router.push('/detail/'+value)
+    },
     onFocus(){
       // console.log(1)
       this.isFocus = true;
     },
     onSubmit(){
 
+      this.$store.dispatch("styleSearch",{style_name:this.value}).then(res=>{
+        if(!res.data.length){
+          return null;
+        }else{
+          return res.data[0].style_id;
+        }
+
+      }).then(res=>{
+        console.log(res);
+        this.$store.dispatch("bookSearch",{book_name:this.value,author:this.value,book_style:res}).then(res=>{
+
+          this.searchList = res.data;
+        })
+      })
     },
     onCancel(){
 

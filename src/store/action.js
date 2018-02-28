@@ -74,6 +74,21 @@ const actions = {
       return res;
     })
   },
+  bookSearch(store, data){
+    return api.bookSearch(data).then(res => {
+      return res;
+    })
+  },
+  styleSearch(store, data){
+    return api.styleSearch(data).then(res => {
+      return res;
+    })
+  },
+  bookById(store, data){
+    return api.bookById(data).then(res => {
+      return res;
+    })
+  },
 
 
 }

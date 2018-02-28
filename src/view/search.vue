@@ -44,7 +44,7 @@
             <h4 style="padding-left:20px;">{{ title }}</h4>
             <div class="">
               <span v-for="item in dataList">
-                <a :href="'#/searchDetail?data='+item.label"> {{item.label}} </a>
+                <a :href="'#/searchDetail?data='+item.label+'&dataId='+item.value"> {{item.label}} </a>
               </span>
             </div>
           </div>
@@ -81,7 +81,7 @@ export default {
     XButton
   },
   created(){
-    this.$store.dispatch("bookType").then(res=>{
+    this.$store.dispatch("bookType",{}).then(res=>{
       let data = res.data;
       for (var i = 0; i < data.length; i++) {
         this.searchList.push({"label":data[i]["type_name"],"value":data[i]["type_id"]})

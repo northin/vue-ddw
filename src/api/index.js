@@ -100,13 +100,22 @@ export default {
   },
 
   bookType(data){
-    return instance.get(config.url+'/book/getType',data);
+    return instance.post(config.url+'/book/getType',data);
   },
   bookStyle(data){
     return instance.post(config.url+'/book/getStyle',data);
   },
   book(data){
     return instance.post(config.url+'/book/getBook',data);
+  },
+  bookSearch(data){
+    return instance.post(config.url+'/book/getCondBook',data);
+  },
+  styleSearch(data){
+    return instance.post(config.url+'/book/getCondStyle',data);
+  },
+  bookById(data){
+    return instance.post(config.url+'/book/getById',data);
   }
 
 
