@@ -5,6 +5,9 @@
       <span slot="right" @click="modify" size="40" style="fill:#fff;position:relative;top:-2px;left:-3px;">编辑</span>
     </x-header>
     <div class="" style="">
+      <div class="" style="margin-top:20px;" v-if="list.length == 0">
+        暂无收藏
+      </div>
        <swipeout>
          <!-- :ref="'swipeoutItem'+index" -->
          <template v-for="(item,index) in list">
@@ -18,14 +21,14 @@
              <div slot="content" class="demo-content vux-1px-t">
                  <div class="content-li">
                      <div class="">
-                       <img src="" class="content-img" alt="" style="">
+                       <img :src="'http://localhost:8081/book/download?filename='+item.picture" class="content-img" alt="" style="">
                      </div>
                      <div class="" style="width: 55%;text-align: left;padding-left: 28px;">
                        <div class="">
-                         寻羊冒险记（精）{{index}}
+                         {{ item.book_name }}
                        </div>
                        <div class="">
-                         ¥ <span>36.30</span>
+                         ¥ <span>{{ item.price }}</span>
                        </div>
                      </div>
                      <div class="" >
@@ -52,7 +55,7 @@ export default {
   name: 'myCollection',
   data(){
     return {
-      list:[1,2]
+      list:[]
     }
   },
   components:{
@@ -61,6 +64,11 @@ export default {
     SwipeoutItem,
     SwipeoutButton,
     XButton
+  },
+  created(){
+    this.$store.dispatch("collectionQry",{}).then(res=>{
+      this.list = res.data.length==0?[]:res.data[0].bookList;
+    })
   },
   methods:{
     modify(){
@@ -71,7 +79,33 @@ export default {
       }
     },
     onButtonClickR(index){
-      console.log(index)
+      let id = this.list[index].book_id;
+      this.$store.dispatch("collectionDel",{book_id:id}).then(res=>{
+        if(!res){
+
+        }else if(!res.data.errorCode){
+          this.isColl = !this.isColl
+          const self = this;
+          this.$vux.alert.show({
+           title: '取消收藏成功',
+           // content:res.data.errorMessage,
+           onShow () {
+           },
+           onHide () {
+           }
+          })
+        }else{
+          const self = this;
+          this.$vux.alert.show({
+           title: '取消收藏失败',
+           // content:res.data.errorMessage,
+           onShow () {
+           },
+           onHide () {
+           }
+          })
+        }
+      })
     },
     onButtonClickL(index){
       // console.log(this.$refs["swipeoutItem"+index])

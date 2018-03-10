@@ -13,7 +13,7 @@
       <swiper :show-dots="false" height="80vh">
         <swiper-item v-if='(index == 1)'>
           <div class="">
-            <img src="" alt="" class='detail-img'>
+            <img :src="bookSrc" alt="" class='detail-img'>
           </div>
           <div class="" style="width:70%;text-align:left;padding-left:10px;background-color:#fff;padding-top:10px">
             {{ bookName }}
@@ -136,14 +136,14 @@
     </div>
 
     <div class="buy-div" style="display:flex">
-      <div class="" style="width:15%">
-        <i class="fa fa-heart-o" style="position:absolute;color:red;top:5px;" aria-hidden="true"></i>
+      <div class="" style="width:15%" @click="collection">
+        <i :class="isColl?'fa fa-heart':'fa fa-heart-o'" style="position:absolute;color:red;top:5px;" aria-hidden="true"></i>
         <div style="font-size: 12px;padding-top: 10px;padding-left: 12px;">收藏</div>
       </div>
-      <div class="" style="width:16%">
+      <div class="" style="width:16%" @click="linkCart">
         <i class="fa fa-shopping-cart" style="position:absolute;top:5px;"  aria-hidden="true"></i>
         <div style="font-size: 12px;padding-top: 10px;padding-left: 14px;">购物车</div>
-        <badge text="1" style="    position: absolute;top: 0;left:22%"></badge>
+        <badge :text="cartNum" v-show="cartNum" style="position: absolute;top: 0;left:22%">{</badge>
       </div>
       <div class="" style="padding-left:8%">
         <x-button class="buy-btn" :gradients="['#FF5E3A', '#FF9500']"  style=" color:#fff">
@@ -151,7 +151,7 @@
         </x-button>
       </div>
       <div class="" style="">
-        <x-button class="buy-btn" :gradients="['#FF2719', '#FF61AD']" style=" color:#fff; margin-left: 0px;">
+        <x-button @click.native="goCart" class="buy-btn" :gradients="['#FF2719', '#FF61AD']" style=" color:#fff; margin-left: 0px;">
           加入购物车
         </x-button>
       </div>
@@ -175,6 +175,9 @@ export default {
       compony:'',
       styleData:'',
       typeData:'',
+      bookSrc:'',
+      isColl:false,
+      cartNum:0,
       author:'(日)村上春树',
       detailIndex:1,
       list: [{
@@ -215,9 +218,10 @@ export default {
       this.bookName = res.data.book_name;
       this.price = res.data.price;
       this.date = res.data.date;
+      this.bookSrc = 'http://localhost:8081/book/download?filename='+res.data.picture
       this.compony = res.data.compony;
       this.list[0].value = res.data.book_name;
-      this.list[0].value = res.data.isbn;
+      this.list[1].value = res.data.isbn;
       this.list[2].value = this.author
       this.list[3].value = res.data.compony;
       this.list[4].value = res.data.date;
@@ -233,9 +237,130 @@ export default {
         this.typeData = res.data[0].type_name
       })
     })
+    this.$store.dispatch("isLogin").then(res=>{
+      if(!res.data.errorCode){
+        return true
+      }else{
+        return false
+      }
+    }).then(res=>{
+      if(res){
+        this.$store.dispatch("collectionQry",{book_id:id}).then(res=>{
+          if(res.data.length){
+            this.isColl = true
+          }
+        })
+        this.$store.dispatch("cartQry",{}).then(res=>{
+          if(res.data.length){
+            for (var i = 0; i < res.data.length; i++) {
+              this.cartNum += res.data[i].num
+            }
+          }
+        })
+
+      }
+    })
+
   },
   methods:{
+    linkCart(){
+      this.$store.dispatch("isLogin").then(res=>{
+        if(!res.data.errorCode){
+          this.$router.push('/cart');
+        }else{
+          this.$router.push('/login');
+        }
+      })
 
+    },
+    goCart(){
+      let book_id = this.$route.params.id
+      this.$store.dispatch("cartInsert",{book_id:book_id,num:1}).then(res=>{
+        if(!res){
+
+        }else if(!res.data.errorCode){
+          this.cartNum  = this.cartNum + 1
+          this.$vux.alert.show({
+           title: '加入成功',
+           // content:res.data.errorMessage,
+           onShow () {
+           },
+           onHide () {
+
+           }
+          })
+        }else{
+          const self = this;
+          this.$vux.alert.show({
+           title: '加入失败',
+           // content:res.data.errorMessage,
+           onShow () {
+           },
+           onHide () {
+           }
+          })
+        }
+      })
+    },
+    collection(){
+      let id = this.$route.params.id
+      if(this.isColl){
+        this.$store.dispatch("collectionDel",{book_id:id}).then(res=>{
+          if(!res){
+
+          }else if(!res.data.errorCode){
+            this.isColl = !this.isColl
+            const self = this;
+            this.$vux.alert.show({
+             title: '取消收藏成功',
+             // content:res.data.errorMessage,
+             onShow () {
+             },
+             onHide () {
+             }
+            })
+          }else{
+            const self = this;
+            this.$vux.alert.show({
+             title: '取消收藏失败',
+             // content:res.data.errorMessage,
+             onShow () {
+             },
+             onHide () {
+             }
+            })
+          }
+        })
+      }else{
+        this.$store.dispatch("collectionInsert",{book_id:id}).then(res=>{
+          if(!res){
+
+          }else if(!res.data.errorCode){
+            this.isColl = !this.isColl
+            const self = this;
+            this.$vux.alert.show({
+             title: '添加收藏成功',
+             // content:res.data.errorMessage,
+             onShow () {
+             },
+             onHide () {
+             }
+            })
+          }else{
+            const self = this;
+            this.$vux.alert.show({
+             title: '添加收藏失败',
+             // content:res.data.errorMessage,
+             onShow () {
+             },
+             onHide () {
+             }
+            })
+          }
+        })
+      }
+
+    }
   },
   components:{
     FormPreview,
@@ -256,9 +381,10 @@ export default {
 <style lang="css" scoped>
 .detail-img{
   display: block;
-  width: 100%;
+  /* width: 100%; */
   height: 200px;
-  border: 1px solid #ccc;
+  margin:0 auto;
+  /* border: 1px solid #ccc; */
 }
 .detailButton{
   margin: 0 10px;

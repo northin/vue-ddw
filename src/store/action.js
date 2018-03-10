@@ -13,6 +13,11 @@ const actions = {
       return res;
     })
   },
+  isLogin(store, data){
+    return api.isLogin(data).then(res => {
+      return res;
+    })
+  },
   loginOut(store, loginData){
     return api.userLoginOut(loginData).then(res => {
       // console.log(res);
@@ -89,7 +94,43 @@ const actions = {
       return res;
     })
   },
+  collectionQry(store, data){
+    return api.collectionQry(data).then(res => {
+      return res;
+    })
+  },
+  collectionDel(store, data){
+    return api.collectionDel(data).then(res => {
+      return res;
+    })
+  },
+  collectionInsert(store, data){
+    return api.collectionInsert(data).then(res => {
+      return res;
+    })
+  },
 
+
+  cartQry(store, data){
+    return api.cartQry(data).then(res => {
+      return res;
+    })
+  },
+  cartDel(store, data){
+    return api.cartDel(data).then(res => {
+      return res;
+    })
+  },
+  cartInsert(store, data){
+    return api.cartInsert(data).then(res => {
+      return res;
+    })
+  },
+  cartUpdate(store, data){
+    return api.cartUpdate(data).then(res => {
+      return res;
+    })
+  },
 
 }
 

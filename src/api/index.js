@@ -31,7 +31,16 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
     response => {
-        return response;
+        if(response.data.errorCode == -2){
+          router.replace({ //跳转到登录页面
+              path: '/login',
+              query: { redirect: router.currentRoute.fullPath } // 将跳转的路由path作为参数，登录成功后跳转到该路由
+          });
+
+        }else{
+          return response;
+        }
+
     },
     error => { //默认除了2XX之外的都是错误的，就会走这里
       console.log(error)
@@ -77,6 +86,9 @@ export default {
   userLoginOut(data){
     return instance.post(config.url+'/user/loginOut',data);
   },
+  isLogin(data){
+    return instance.post(config.url+'/user/isLogin',data);
+  },
   register(data){
     return instance.post(config.url+'/user/register',data);
   },
@@ -116,6 +128,27 @@ export default {
   },
   bookById(data){
     return instance.post(config.url+'/book/getById',data);
+  },
+  collectionQry(data){
+    return instance.post(config.url+'/collection/get',data);
+  },
+  collectionDel(data){
+    return instance.post(config.url+'/collection/delete',data);
+  },
+  collectionInsert(data){
+    return instance.post(config.url+'/collection/insert',data);
+  },
+  cartQry(data){
+    return instance.post(config.url+'/cart/get',data);
+  },
+  cartDel(data){
+    return instance.post(config.url+'/cart/delete',data);
+  },
+  cartInsert(data){
+    return instance.post(config.url+'/cart/insert',data);
+  },
+  cartUpdate(data){
+    return instance.post(config.url+'/cart/update',data);
   }
 
 

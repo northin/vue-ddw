@@ -21,7 +21,7 @@
         </li>
         <li v-for="(item,index) in searchList" @click="goto(item.book_id)">
           <div class="li-content" style="display:flex">
-            <img class="li-img" src="" alt="">
+            <img class="li-img" :src="'http://localhost:8081/book/download?filename='+item.picture" alt="">
             <div class="">
               <h4 style="text-align:left;">{{ item.book_name }}</h4>
               <p class="li-author">({{ item.country }}) {{ item.author }}</p>
