@@ -132,6 +132,28 @@ const actions = {
     })
   },
 
+
+  orderQry(store, data){
+    return api.orderQry(data).then(res => {
+      return res;
+    })
+  },
+  orderDel(store, data){
+    return api.orderDel(data).then(res => {
+      return res;
+    })
+  },
+  orderInsert(store, data){
+    return api.orderInsert(data).then(res => {
+      return res;
+    })
+  },
+  orderUpdate(store, data){
+    return api.orderUpdate(data).then(res => {
+      return res;
+    })
+  },
+
 }
 
 export default actions

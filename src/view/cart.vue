@@ -62,7 +62,7 @@
     <div class="buy-div" style="display:flex">
       <check-icon :value.sync="all" @click.native="allChose" style="width:40%;text-align:left">全选</check-icon>
       <span>合计：</span><span>¥{{ allPay }}</span>
-      <x-button class="buy-btn" style="">
+      <x-button class="buy-btn" style="" @click.native="order">
         结算（{{ num }}）
       </x-button>
     </div>
@@ -83,6 +83,7 @@ export default {
       all:false,
       allPay:0,
       num:0,
+      choseCartId:[],
     }
   },
   created(){
@@ -99,18 +100,44 @@ export default {
     })
   },
   methods:{
+    order(){
+      if(this.choseCartId.length){
+        this.$store.dispatch("addressSelect").then(res => {
+          return res.data.data.length == 0?null:res.data.data[0].addressId;
+        }).then(res=>{
+          this.$store.dispatch("orderInsert",{payMoney:this.allPay,address_id:res,cart_id:this.choseCartId}).then(res=>{
+            if(!res.data.errorCode){
+              let order_id = res.data.data
+              console.log(order_id)
+              this.$router.push('/order/'+order_id);
+            }else{
+              this.$vux.alert.show({
+               title: '下单失败',
+               onShow () {
+               },
+               onHide () {
+               }
+              })
+            }
+          })
+        })
+
+      }
+    },
     allChose(){
       if(this.all){
         for (var i = 0; i < this.list.length; i++) {
           this.list[i].isChose = true
           this.allPay += (+this.list[i].bookList[0].price)*(+this.list[i].num).toFixed(2);
           this.num += this.list[i].num
+          this.choseCartId.push(this.list[i].cart_id)
         }
       }else{
         for (var i = 0; i < this.list.length; i++) {
           this.list[i].isChose = false
           this.allPay -= (+this.list[i].bookList[0].price)*(+this.list[i].num).toFixed(2);
           this.num -= this.list[i].num
+          this.choseCartId = []
         }
       }
 
@@ -129,9 +156,16 @@ export default {
         }
         this.allPay += (+bookData.bookList[0].price)*(+bookData.num).toFixed(2);
         this.num += bookData.num
+        this.choseCartId.push(bookData.cart_id)
       }else{
         this.allPay -= (+bookData.bookList[0].price)*(+bookData.num).toFixed(2);
         this.num -= bookData.num
+        let index = this.choseCartId.indexOf(bookData.cart_id)
+        if(index>0){
+          this.choseCartId.splice(index-1,1)
+        }else if(index==0){
+          this.choseCartId.shift()
+        }
         this.all = false
       }
     },

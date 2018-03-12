@@ -31,17 +31,15 @@
       </confirm>
 
     <div v-transfer-dom>
-      <popup v-model="addShow" position="right" width="100%">
+      <popup v-model="addressShow" position="right" width="100%">
         <div>
           <x-header style="background-color:red">
-            <span>新增收货地址</span>
+            <span>选择收货地址</span>
             <span slot="overwrite-left" type="" @click="cancel" size="40" style="fill:#fff;position:relative;top:-2px;left:-3px;">返回</span>
             <span slot="right" type="" @click="addSave" size="40" style="fill:#fff;position:relative;top:-2px;left:-3px;">保存</span>
           </x-header>
           <group>
-            <x-input title="收货人" type="text" placeholder="请输入收货人的姓名" v-model="addName" required></x-input>
-            <x-input title="电 话" v-model="addMb" type="text" placeholder="请输入收货人的电话" required></x-input>
-            <x-input title="地 址" v-model="addAddress" type="text" placeholder="请输入收货人的地址" required></x-input>
+            
           </group>
         </div>
       </popup>

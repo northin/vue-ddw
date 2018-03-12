@@ -4,6 +4,7 @@ import Index from '@/view/index'
 import IndexMain from '@/view/indexMain'
 import User from '@/view/user/user'
 import Cart from '@/view/cart'
+import Order from '@/view/order'
 import Search from '@/view/search'
 import UserInfo from '@/view/user/userInfo'
 import SetNiName from '@/view/user/setNiName'
@@ -57,6 +58,12 @@ const router = new Router({
 	      	component: Search,
 	      },
       ]
+    },{
+      path:'/order/:order_id',
+      component: Order,
+      meta: {
+        requireAuth: false // 添加该字段，表示进入这个路由是需要登录的
+      }
     },{
       path: '/userInfo',
       name: 'userInfo',

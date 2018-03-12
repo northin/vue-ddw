@@ -149,6 +149,20 @@ export default {
   },
   cartUpdate(data){
     return instance.post(config.url+'/cart/update',data);
+  },
+
+
+  orderQry(data){
+    return instance.post(config.url+'/order/get',data);
+  },
+  orderDel(data){
+    return instance.post(config.url+'/order/delete',data);
+  },
+  orderInsert(data){
+    return instance.post(config.url+'/order/insert',data);
+  },
+  orderUpdate(data){
+    return instance.post(config.url+'/order/update',data);
   }
 
 
