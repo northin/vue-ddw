@@ -35,31 +35,31 @@
       <div class="myOrder">
         <div class="myOrderTitle">
           <span>我的订单</span>
-          <span>查看所有订单></span>
+          <span @click="goOrderDetail(1)">查看所有订单></span>
         </div>
         <div class="myOrderContent">
           <ul class="myOrderUl">
-            <li>
+            <li @click="goOrderDetail(1)">
               <i class="fa fa-credit-card-alt" aria-hidden="true"></i>
               <div>待付款</div>
-              <badge text="1" style="    position: absolute;top: -6px;"></badge>
+              <badge text="1" style=" position: absolute;top: -6px;"></badge>
             </li>
-            <li>
+            <li @click="goOrderDetail(2)">
               <i class="fa fa-caret-square-o-right" aria-hidden="true"></i>
               <div>待发货</div>
               <badge text="1" style="    position: absolute;top: -6px;"></badge>
             </li>
-            <li>
+            <li @click="goOrderDetail(3)">
               <i class="fa fa-truck" aria-hidden="true"></i>
               <div>待收货</div>
               <badge text="1" style="    position: absolute;top: -6px;"></badge>
             </li>
-            <li>
+            <li @click="goOrderDetail(4)">
               <i class="fa fa-check-square" aria-hidden="true"></i>
               <div>待评论</div>
               <badge text="1" style="    position: absolute;top: -6px;"></badge>
             </li>
-            <li>
+            <li @click="goOrderDetail(5)">
               <i class="fa fa-money" aria-hidden="true"></i>
               <div>退款／售后</div>
               <badge text="1" style="    position: absolute;top: -6px;"></badge>
@@ -125,6 +125,9 @@ export default {
     toCollection(){
       this.$router.push('/collection')
     },
+    goOrderDetail(num){
+      this.$router.push('/orderDetail/'+num)
+    }
   }
 }
 </script>

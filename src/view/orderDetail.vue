@@ -1,0 +1,122 @@
+<template lang="html">
+    <div class="">
+      <x-header style="background-color:red">
+        <span>订单查看</span>
+      </x-header>
+      <div>
+       <tab :line-width=2 active-color='#fc378c' v-model="index">
+        <tab-item class="vux-center" :selected="demo2 === item" v-for="(item, index) in list" @click="demo2 = item" :key="index">{{item}}</tab-item>
+      </tab>
+      <swiper v-model="index" class="orderDetailSwiper" style="height: 85vh;" :show-dots="false">
+
+        <swiper-item :key="index">
+          <div v-for="(item, index) in dataList" class="tab-swiper vux-center">
+            <div class="bookDetail" v-for="(itemBook,indexbook) in item.cartList">
+              <img class="bookDetailImg" :src="'http://localhost:8081/book/download?filename='+itemBook.bookList[0].picture" alt="">
+              <div class="bookDetailName">
+                {{ itemBook.bookList[0].book_name }}
+              </div>
+              <div class="bookDetailPrice">
+                <div class="">
+                  ¥{{ itemBook.bookList[0].price }}
+                </div>
+                <div class="">
+                  *{{  itemBook.num  }}
+                </div>
+              </div>
+            </div>
+            <div class="bookFooter">
+              <span>共{{ item.cartList.length }}件商品</span>
+              <span>共¥{{ item.payMoney }}</span>
+            </div>
+            <div class="bookBtn" style="display:flex;justify-content: flex-end;margin-bottom:10px;">
+              <x-button @click="goCancle(item.user_id)" style="width:30%;font-size:12px;margin:0">取消订单</x-button>
+
+              <x-button v-if="status==1" @click.native="goPay(item.order_id)" style="width:30%;font-size:12px;margin:0 10px 0 10px;background-color:red">立即支付</x-button>
+            </div>
+          </div>
+        </swiper-item>
+      </swiper>
+    </div>
+    </div>
+</template>
+
+<script>
+import { CheckIcon, XHeader,Swiper,XNumber, SwiperItem ,XButton,Tab, TabItem} from 'vux'
+export default {
+  data () {
+    return {
+      msg: 'index',
+      list:['待付款', '待发货', '待收货', '待评价'],
+      dataList:[],
+      index:-1,
+      demo2:1,
+      status:-1,
+    }
+  },
+  created(){
+    let order_status = this.$route.params.order_status
+    this.index = order_status - 1;
+    this.status= order_status;
+    // this.$store.dispatch("orderQry",{order_status:order_status}).then(res=>{
+    //   this.dataList = res.data;
+    // })
+  },
+  watch: {
+    index: function(oldDemo2,newDemo2){
+      this.orderQry(oldDemo2)
+    }
+  },
+  methods:{
+    orderQry(num){
+      this.$store.dispatch("orderQry",{order_status:num+1}).then(res=>{
+        this.dataList = res.data;
+      })
+    },
+    goPay(num){
+      this.$router.push('/order/'+num)
+    },
+    goCancle(){
+
+    }
+  },
+  components: {
+    XHeader,
+    CheckIcon,
+    Swiper,
+    XButton,
+    SwiperItem,
+    XNumber,
+    Tab,
+    TabItem
+  }
+}
+</script>
+
+<style lang="css">
+.bookDetail{
+  display: flex;
+  background-color: #eee;
+  border-top: 1px solid #ccc;
+
+}
+.bookFooter{
+  text-align: right;
+  padding-right: 20px;
+  line-height: 50px;
+  height: 50px;
+}
+.bookDetailImg{
+  width: 80px;
+  padding:10px;
+  height: 80px;
+}
+.bookDetailName{
+  width: 60%;
+  padding-top: 20px;
+}
+.bookDetailPrice{
+  width:20%;
+  padding-top: 20px;
+}
+</style>

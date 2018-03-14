@@ -15,3 +15,7 @@ p{
 .detailForm .weui-form-preview__hd{
   display: none;
 }
+.orderDetailSwiper .vux-swiper{
+  height: 85vh ! important;
+  overflow: auto ! important;
+}
