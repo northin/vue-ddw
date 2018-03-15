@@ -60,11 +60,28 @@ export default {
     let style_id = this.$route.query.dataId;
 
     this.value = searchData
+    if(style_id == undefined){
+      this.$store.dispatch("styleSearch",{style_name:this.value}).then(res=>{
+        if(!res.data.length){
+          return null;
+        }else{
+          return res.data[0].style_id;
+        }
 
-    this.$store.dispatch("bookSearch",{book_name:searchData,author:searchData,book_style:style_id}).then(res=>{
+      }).then(res=>{
+        console.log(res);
+        this.$store.dispatch("bookSearch",{book_name:this.value,author:this.value,book_style:res}).then(res=>{
 
-      this.searchList = res.data;
-    })
+          this.searchList = res.data;
+        })
+      })
+    }else{
+      this.$store.dispatch("bookSearch",{book_name:searchData,author:searchData,book_style:style_id}).then(res=>{
+
+        this.searchList = res.data;
+      })
+    }
+
 
 
 

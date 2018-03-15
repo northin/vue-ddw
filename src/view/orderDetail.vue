@@ -30,19 +30,28 @@
               <span>共¥{{ item.payMoney }}</span>
             </div>
             <div class="bookBtn" style="display:flex;justify-content: flex-end;margin-bottom:10px;">
-              <x-button @click="goCancle(item.user_id)" style="width:30%;font-size:12px;margin:0">取消订单</x-button>
+              <x-button v-if="status==0"  @click.native="goCancle(item.order_id)" style="width:30%;font-size:12px;margin:0">取消订单</x-button>
 
-              <x-button v-if="status==1" @click.native="goPay(item.order_id)" style="width:30%;font-size:12px;margin:0 10px 0 10px;background-color:red">立即支付</x-button>
+              <x-button v-if="status==0" @click.native="goPay(item.order_id)" style="width:30%;font-size:12px;margin:0 10px 0 10px;background-color:red">立即支付</x-button>
             </div>
           </div>
         </swiper-item>
       </swiper>
     </div>
+
+    <confirm v-model="show"
+      title="确认"
+      @on-cancel="onCancel"
+      @on-confirm="onConfirm"
+      @on-show="onShow"
+      @on-hide="onHide">
+        <p style="text-align:center;">你确定取消吗?</p>
+      </confirm>
     </div>
 </template>
 
 <script>
-import { CheckIcon, XHeader,Swiper,XNumber, SwiperItem ,XButton,Tab, TabItem} from 'vux'
+import { CheckIcon, XHeader,Swiper,XNumber, SwiperItem ,XButton,Tab, TabItem,Confirm} from 'vux'
 export default {
   data () {
     return {
@@ -51,13 +60,15 @@ export default {
       dataList:[],
       index:-1,
       demo2:1,
-      status:-1,
+      status:-2,
+      show:false,
+      currentOrder:'',
     }
   },
   created(){
     let order_status = this.$route.params.order_status
     this.index = order_status - 1;
-    this.status= order_status;
+    this.status= order_status-1;
     // this.$store.dispatch("orderQry",{order_status:order_status}).then(res=>{
     //   this.dataList = res.data;
     // })
@@ -65,9 +76,47 @@ export default {
   watch: {
     index: function(oldDemo2,newDemo2){
       this.orderQry(oldDemo2)
+      this.status = oldDemo2
     }
   },
   methods:{
+    onCancel(){
+
+    },
+    onShow(){
+
+    },
+    onHide(){
+
+    },
+    onConfirm(){
+      this.$store.dispatch("orderDel",{order_id:this.currentOrder}).then(res=>{
+        if(!res){
+
+        }else if(!res.data.errorCode){
+          let self = this
+          this.$vux.alert.show({
+           title: '取消成功',
+           // content:res.data.errorMessage,
+           onShow () {
+           },
+           onHide () {
+             self.orderQry(0)
+           }
+          })
+        }else{
+          const self = this;
+          this.$vux.alert.show({
+           title: '取消失败',
+           // content:res.data.errorMessage,
+           onShow () {
+           },
+           onHide () {
+           }
+          })
+        }
+      })
+    },
     orderQry(num){
       this.$store.dispatch("orderQry",{order_status:num+1}).then(res=>{
         this.dataList = res.data;
@@ -76,8 +125,10 @@ export default {
     goPay(num){
       this.$router.push('/order/'+num)
     },
-    goCancle(){
-
+    goCancle(num){
+      console.log(1)
+      this.show = true;
+      this.currentOrder = num;
     }
   },
   components: {
@@ -88,6 +139,7 @@ export default {
     SwiperItem,
     XNumber,
     Tab,
+    Confirm,
     TabItem
   }
 }

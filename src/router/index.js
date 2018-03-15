@@ -16,6 +16,7 @@ import SetSys from '@/view/user/setSys'
 import AboutShop from '@/view/user/aboutShop'
 import SetAddress from '@/view/user/setAddress'
 import Collection from '@/view/user/collection'
+import Info from '@/view/Info'
 import Detail from '@/view/detail'
 import SearchDetail from '@/view/searchDetail'
 import Login from '@/view/login'
@@ -63,18 +64,22 @@ const router = new Router({
       path:'/order/:order_id',
       component: Order,
       meta: {
-        requireAuth: false // 添加该字段，表示进入这个路由是需要登录的
+        requireAuth: true // 添加该字段，表示进入这个路由是需要登录的
       }
     },{
       path:'/orderDetail/:order_status',
       component: OrderDetail,
       meta: {
-        requireAuth: false // 添加该字段，表示进入这个路由是需要登录的
+        requireAuth: true // 添加该字段，表示进入这个路由是需要登录的
       }
     },{
       path: '/userInfo',
       name: 'userInfo',
       component: UserInfo,
+    },{
+      path: '/info/:id',
+      name: 'Info',
+      component: Info,
     },{
       path: '/setNiName',
       name: 'setNiName',

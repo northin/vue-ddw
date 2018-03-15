@@ -153,6 +153,11 @@ const actions = {
       return res;
     })
   },
+  pay(store, data){
+    return api.pay(data).then(res => {
+      return res;
+    })
+  },
 
 }
 

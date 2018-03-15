@@ -163,6 +163,9 @@ export default {
   },
   orderUpdate(data){
     return instance.post(config.url+'/order/update',data);
+  },
+  pay(data){
+    return instance.post(config.url+'/order/pay',data);
   }
 
 

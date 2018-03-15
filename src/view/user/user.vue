@@ -42,27 +42,27 @@
             <li @click="goOrderDetail(1)">
               <i class="fa fa-credit-card-alt" aria-hidden="true"></i>
               <div>待付款</div>
-              <badge text="1" style=" position: absolute;top: -6px;"></badge>
+              <badge v-if="userNum1 != 0"  :text="userNum1" style=" position: absolute;top: -6px;"></badge>
             </li>
             <li @click="goOrderDetail(2)">
               <i class="fa fa-caret-square-o-right" aria-hidden="true"></i>
               <div>待发货</div>
-              <badge text="1" style="    position: absolute;top: -6px;"></badge>
+              <badge v-if="userNum2 != 0"  :text="userNum2" style="    position: absolute;top: -6px;"></badge>
             </li>
             <li @click="goOrderDetail(3)">
               <i class="fa fa-truck" aria-hidden="true"></i>
               <div>待收货</div>
-              <badge text="1" style="    position: absolute;top: -6px;"></badge>
+              <badge v-if="userNum3 != 0"  :text="userNum3" style="    position: absolute;top: -6px;"></badge>
             </li>
             <li @click="goOrderDetail(4)">
               <i class="fa fa-check-square" aria-hidden="true"></i>
               <div>待评论</div>
-              <badge text="1" style="    position: absolute;top: -6px;"></badge>
+              <badge v-if="userNum4 != 0"  :text="userNum4" style="    position: absolute;top: -6px;"></badge>
             </li>
             <li @click="goOrderDetail(5)">
               <i class="fa fa-money" aria-hidden="true"></i>
               <div>退款／售后</div>
-              <badge text="1" style="    position: absolute;top: -6px;"></badge>
+              <badge v-if="userNum5 != 0"  :text="userNum5" style="    position: absolute;top: -6px;"></badge>
             </li>
           </ul>
         </div>
@@ -103,6 +103,11 @@ export default {
     return {
       msg: 'index',
       name:'',
+      userNum1:0,
+      userNum2:0,
+      userNum3:0,
+      userNum4:0,
+      userNum5:0,
     }
   },
   created(){
@@ -110,6 +115,23 @@ export default {
       // console.log(res)
       this.name = res.data.name
     })
+
+    this.$store.dispatch("orderQry",{order_status:1}).then(res=>{
+      this.userNum1 = res.data.length;
+    })
+    this.$store.dispatch("orderQry",{order_status:2}).then(res=>{
+      this.userNum2 = res.data.length;
+    })
+    this.$store.dispatch("orderQry",{order_status:3}).then(res=>{
+      this.userNum3 = res.data.length;
+    })
+    this.$store.dispatch("orderQry",{order_status:4}).then(res=>{
+      this.userNum4 = res.data.length;
+    })
+    this.$store.dispatch("orderQry",{order_status:5}).then(res=>{
+      this.userNum5 = res.data.length;
+    })
+
   },
   components: {
       XHeader,

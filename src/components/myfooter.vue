@@ -12,12 +12,12 @@
       <li :class="(isActive == 'cart'? 'active':'')" @click="goto('cart')">
         <i class="fa fa-cart-arrow-down" aria-hidden="true"></i>
         <div>购物车</div>
-        <badge text="1" style="    position: absolute;top: 0;"></badge>
+        <badge v-if="cartNum != 0" :text="cartNum" style="    position: absolute;top: 0;"></badge>
       </li>
       <li :class="(isActive == 'user'? 'active':'')" @click="goto('user')">
         <i class="fa fa-user" aria-hidden="true"></i>
         <div>我的</div>
-        <badge text="2" style="    position: absolute;top: 0;"></badge>
+        <badge v-if="userNum != 0"  :text="userNum" style="    position: absolute;top: 0;"></badge>
       </li>
     </ul>
   </div>
@@ -29,7 +29,9 @@ export default {
   name: 'myfooter',
   data () {
     return {
-      isActive:'index'
+      isActive:'index',
+      userNum:0,
+      cartNum:0
     }
   },
   components: {
@@ -39,6 +41,22 @@ export default {
     // console.log(this.$route)
     let urlParams = this.$route.path;
     this.isActive = urlParams.substr(1)
+    this.$store.dispatch("isLogin").then(res=>{
+      if(!res.data.errorCode){
+        return true
+      }else{
+        return false
+      }
+    }).then(res=>{
+      if(res){
+        this.$store.dispatch("cartQry",{}).then(res=>{
+          this.cartNum = res.data.length
+        })
+        this.$store.dispatch("orderQry",{order_status:1}).then(res=>{
+          this.userNum = res.data.length;
+        })
+      }
+    })
   },
   methods:{
     goto:function(str){

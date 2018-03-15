@@ -129,7 +129,7 @@ export default {
       this.isFocus = true;
     },
     onSubmit(){
-
+      this.$router.push('/searchDetail?data='+this.value);
     },
     onCancel(){
       this.isFocus = false;

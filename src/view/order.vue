@@ -47,7 +47,7 @@
         实付：¥{{ allPay }}
       </div>
       <div class="">
-        <x-button class="order-btn" style="background-color:red;color:#fff;" @click.native="">
+        <x-button class="order-btn" style="background-color:red;color:#fff;" @click.native="pay">
           去支付
         </x-button>
       </div>
@@ -218,6 +218,35 @@ export default {
 
   },
   methods:{
+    pay(){
+      this.$store.dispatch("pay",{order_id:this.orderId}).then(res=>{
+        if(!res){
+
+        }else if(!res.data.errorCode){
+          let self = this
+          this.$vux.alert.show({
+           title: '支付成功',
+           // content:res.data.errorMessage,
+           onShow () {
+           },
+           onHide () {
+              self.$router.push("/index")
+           }
+          })
+        }else{
+          const self = this;
+          this.$vux.alert.show({
+           title: '支付失败',
+           // content:res.data.errorMessage,
+           onShow () {
+           },
+           onHide () {
+           }
+          })
+        }
+      })
+
+    },
     init(){
       this.$store.dispatch("orderQry",{order_id:this.orderId}).then(res=>{
         console.log(res.data[0])
