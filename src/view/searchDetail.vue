@@ -21,7 +21,7 @@
         </li>
         <li v-for="(item,index) in searchList" @click="goto(item.book_id)">
           <div class="li-content" style="display:flex">
-            <img class="li-img" :src="'http://localhost:8081/book/download?filename='+item.picture" alt="">
+            <img class="li-img" :src="srcPort+item.picture" alt="">
             <div class="">
               <h4 style="text-align:left;">{{ item.book_name }}</h4>
               <p class="li-author">({{ item.country }}) {{ item.author }}</p>
@@ -36,7 +36,7 @@
 </template>
 
 <script>
-
+import config from '../config/config'
 import { Swiper,Search, GroupTitle, SwiperItem, XButton, Divider } from 'vux'
 export default {
   data(){
@@ -54,6 +54,11 @@ export default {
     XButton,
     Divider,
     Search
+  },
+  computed:{
+    srcPort:function(){
+      return config.url+"/book/download?filename="
+    }
   },
   created(){
     let searchData = this.$route.query.data

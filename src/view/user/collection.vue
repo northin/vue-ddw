@@ -21,7 +21,7 @@
              <div slot="content" class="demo-content vux-1px-t">
                  <div class="content-li">
                      <div class="">
-                       <img :src="'http://localhost:8081/book/download?filename='+item.picture" class="content-img" alt="" style="">
+                       <img :src="srcPort+item.picture" class="content-img" alt="" style="">
                      </div>
                      <div class="" style="width: 55%;text-align: left;padding-left: 28px;">
                        <div class="">
@@ -49,13 +49,18 @@
 </template>
 
 <script>
-
+import config from '../../config/config'
 import { XHeader,Swipeout, SwipeoutItem, SwipeoutButton, XButton } from 'vux'
 export default {
   name: 'myCollection',
   data(){
     return {
       list:[]
+    }
+  },
+  computed:{
+    srcPort:function(){
+      return config.url+"/book/download?filename="
     }
   },
   components:{

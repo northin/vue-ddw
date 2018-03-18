@@ -72,6 +72,11 @@ const actions = {
   bookStyle(store, data){
     return api.bookStyle(data).then(res => {
       return res;
+    },resject=>{
+      alert(resject)
+      return resject;
+    }).catch(function(error) {
+      return error;
     })
   },
   book(store, data){

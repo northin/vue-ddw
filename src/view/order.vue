@@ -21,7 +21,7 @@
 
       <div class="orderBook" @click="showOrderDetail">
         <div class="">
-          <img :src="'http://localhost:8081/book/download?filename='+bookSrc" class="orderBookImg" alt="">
+          <img :src="srcPort+bookSrc" class="orderBookImg" alt="">
         </div>
         <div class="orderBookRight">
           <div class="">
@@ -101,7 +101,7 @@
                 <div slot="content" class="demo-content vux-1px-t">
                     <div class="content-li">
                         <div class="" @click="toDetail(item.bookList[0].book_id)">
-                          <img :src="'http://localhost:8081/book/download?filename='+item.bookList[0].picture" class="content-img" alt="" style="">
+                          <img :src="srcPort+item.bookList[0].picture" class="content-img" alt="" style="">
                         </div>
                         <div class="" style="width: 55%;text-align: left;padding-right: 28px;">
                           <div class=""  v-if=(!item.isEdit) @click="toDetail(item.bookList[0].book_id)" >
@@ -146,7 +146,7 @@
 </template>
 
 <script>
-
+import config from '../config/config'
 import { TransferDom, Popup,XHeader,XButton,Group,XInput,Confirm,Cell,CheckIcon} from 'vux'
 export default {
   directives: {
@@ -182,6 +182,9 @@ export default {
   computed:{
     orderId:function(){
       return this.$route.params.order_id
+    },
+    srcPort:function(){
+      return config.url+"/book/download?filename="
     }
   },
   created(){

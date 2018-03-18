@@ -162,6 +162,7 @@
 </template>
 
 <script>
+import config from '../config/config'
 import { CheckIcon, XHeader,Tab, TabItem,Swiper, SwiperItem, Rater,Group,Cell,XButton,Badge,FormPreview} from 'vux'
 export default {
   data(){
@@ -211,6 +212,11 @@ export default {
       }]
     }
   },
+  computed:{
+    srcPort:function(){
+      return config.url+"/book/download?filename="
+    }
+  },
   created(){
     let id = this.$route.params.id
     this.$store.dispatch("bookById",{book_id:id}).then(res=>{
@@ -218,7 +224,7 @@ export default {
       this.bookName = res.data.book_name;
       this.price = res.data.price;
       this.date = res.data.date;
-      this.bookSrc = 'http://localhost:8081/book/download?filename='+res.data.picture
+      this.bookSrc = this.srcPort+res.data.picture
       this.compony = res.data.compony;
       this.list[0].value = res.data.book_name;
       this.list[1].value = res.data.isbn;

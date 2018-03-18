@@ -12,7 +12,7 @@
         <swiper-item :key="index">
           <div v-for="(item, index) in dataList" class="tab-swiper vux-center">
             <div class="bookDetail" v-for="(itemBook,indexbook) in item.cartList">
-              <img class="bookDetailImg" :src="'http://localhost:8081/book/download?filename='+itemBook.bookList[0].picture" alt="">
+              <img class="bookDetailImg" :src="srcPort+itemBook.bookList[0].picture" alt="">
               <div class="bookDetailName">
                 {{ itemBook.bookList[0].book_name }}
               </div>
@@ -51,6 +51,7 @@
 </template>
 
 <script>
+import config from '../config/config'
 import { CheckIcon, XHeader,Swiper,XNumber, SwiperItem ,XButton,Tab, TabItem,Confirm} from 'vux'
 export default {
   data () {
@@ -63,6 +64,11 @@ export default {
       status:-2,
       show:false,
       currentOrder:'',
+    }
+  },
+  computed:{
+    srcPort:function(){
+      return config.url+"/book/download?filename="
     }
   },
   created(){

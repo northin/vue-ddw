@@ -53,12 +53,12 @@ export default {
   },
   created(){
     this.$store.dispatch("bookStyle",{}).then(res=>{
+
       this.list = res.data;
-    })
+    });
   },
   methods:{
     goInfo(str){
-      console.log(1)
       this.$router.push("/info/"+str)
     },
     resultClick(){

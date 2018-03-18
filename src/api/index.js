@@ -43,7 +43,6 @@ instance.interceptors.response.use(
 
     },
     error => { //默认除了2XX之外的都是错误的，就会走这里
-      console.log(error)
         if(error.response){
             switch(error.response.status){
                 case 500:
