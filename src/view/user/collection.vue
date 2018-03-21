@@ -71,8 +71,8 @@ export default {
     XButton
   },
   created(){
-    this.$store.dispatch("collectionQry",{}).then(res=>{
-      this.list = res.data.length==0?[]:res.data[0].bookList;
+    this.$store.dispatch("collectionQry",{pageNum:10,pageSize:1}).then(res=>{
+      this.list = res.data.data.result.length==0?[]:res.data.data.result[0].bookList;
     })
   },
   methods:{

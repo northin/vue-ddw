@@ -52,7 +52,7 @@ export default {
         this.$store.dispatch("cartQry",{}).then(res=>{
           this.cartNum = res.data.length
         })
-        this.$store.dispatch("orderQry",{order_status:1}).then(res=>{
+        this.$store.dispatch("orderQryAll",{order_status:1}).then(res=>{
           this.userNum = res.data.length;
         })
       }

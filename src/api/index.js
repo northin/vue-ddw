@@ -154,6 +154,9 @@ export default {
   orderQry(data){
     return instance.post(config.url+'/order/get',data);
   },
+  orderQryAll(data){
+    return instance.post(config.url+'/order/getAll',data);
+  },
   orderDel(data){
     return instance.post(config.url+'/order/delete',data);
   },

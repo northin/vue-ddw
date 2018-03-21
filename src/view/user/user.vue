@@ -116,19 +116,19 @@ export default {
       this.name = res.data.name
     })
 
-    this.$store.dispatch("orderQry",{order_status:1}).then(res=>{
+    this.$store.dispatch("orderQryAll",{order_status:1}).then(res=>{
       this.userNum1 = res.data.length;
     })
-    this.$store.dispatch("orderQry",{order_status:2}).then(res=>{
+    this.$store.dispatch("orderQryAll",{order_status:2}).then(res=>{
       this.userNum2 = res.data.length;
     })
-    this.$store.dispatch("orderQry",{order_status:3}).then(res=>{
+    this.$store.dispatch("orderQryAll",{order_status:3}).then(res=>{
       this.userNum3 = res.data.length;
     })
-    this.$store.dispatch("orderQry",{order_status:4}).then(res=>{
+    this.$store.dispatch("orderQryAll",{order_status:4}).then(res=>{
       this.userNum4 = res.data.length;
     })
-    this.$store.dispatch("orderQry",{order_status:5}).then(res=>{
+    this.$store.dispatch("orderQryAll",{order_status:5}).then(res=>{
       this.userNum5 = res.data.length;
     })
 

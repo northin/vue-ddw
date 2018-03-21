@@ -251,8 +251,8 @@ export default {
       }
     }).then(res=>{
       if(res){
-        this.$store.dispatch("collectionQry",{book_id:id}).then(res=>{
-          if(res.data.length){
+        this.$store.dispatch("collectionQry",{book_id:id,pageNum:10,pageSize:1}).then(res=>{
+          if(res.data.data.result.length){
             this.isColl = true
           }
         })

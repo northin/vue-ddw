@@ -39,7 +39,7 @@
             <span slot="right" type="" @click="addSave" size="40" style="fill:#fff;position:relative;top:-2px;left:-3px;">保存</span>
           </x-header>
           <group>
-            
+
           </group>
         </div>
       </popup>
@@ -134,8 +134,8 @@ export default {
     onShow(){},
     onHide(){},
     init(self){
-      self.$store.dispatch("addressSelect").then(res => {
-        self.addressList = res.data.data;
+      self.$store.dispatch("addressSelect",{pageSize:1,pageNum:10}).then(res => {
+        self.addressList = res.data.data.result;
       })
     },
     addSave(){

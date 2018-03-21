@@ -143,6 +143,11 @@ const actions = {
       return res;
     })
   },
+  orderQryAll(store, data){
+    return api.orderQryAll(data).then(res => {
+      return res;
+    })
+  },
   orderDel(store, data){
     return api.orderDel(data).then(res => {
       return res;

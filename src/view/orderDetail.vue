@@ -124,8 +124,8 @@ export default {
       })
     },
     orderQry(num){
-      this.$store.dispatch("orderQry",{order_status:num+1}).then(res=>{
-        this.dataList = res.data;
+      this.$store.dispatch("orderQry",{order_status:num+1,pageNum:10,pageSize:1}).then(res=>{
+        this.dataList = res.data.data.result;
       })
     },
     goPay(num){
