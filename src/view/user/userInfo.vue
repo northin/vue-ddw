@@ -71,11 +71,17 @@
      <popup v-model="showIcon" @on-hide="" @on-show="">
        <div class="popup0">
          <group>
-           <div class="popup0-div">从相册中选取</div>
+           <div class="popup0-div" style="position:relative">
+             从相册中选取或拍照
+             <input type="file" onchange="upload('#fileBtn', '#img');" style="opacity:0;position:absolute;left:16%" accept="image/*" capture="camera"/>
+           </div>
          </group>
-         <group>
-           <div class="popup0-div">拍照</div>
-         </group>
+         <!-- <group>
+           <div class="popup0-div">
+             <input type="file" onchange="upload('#fileBtn', '#img');" value="拍照" accept="image/*" capture="camera"/>
+
+           </div>
+         </group> -->
          <group>
            <div class="popup0-div" @click="clearIcon">取消</div>
          </group>

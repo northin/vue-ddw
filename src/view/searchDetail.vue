@@ -120,9 +120,9 @@ export default {
 
       }).then(res=>{
         console.log(res);
-        this.$store.dispatch("bookSearch",{book_name:this.value,author:this.value,book_style:res}).then(res=>{
+        this.$store.dispatch("bookSearch",{book_name:this.value,author:this.value,book_style:res,pageNum:10,pageSize:1}).then(res=>{
 
-          this.searchList = res.data;
+          this.searchList = res.data.data.result;
         })
       })
     },

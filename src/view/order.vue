@@ -188,31 +188,31 @@ export default {
     }
   },
   created(){
-    this.$store.dispatch("orderQry",{order_id:this.orderId}).then(res=>{
-      console.log(res.data[0])
-      if(res.data[0].cartList.length){
-        this.allNum = res.data[0].cartList.length
-        this.list = res.data[0].cartList;
-        this.allPay = res.data[0].payMoney;
-        this.bookSrc = res.data[0].cartList[0].bookList[0].picture
-        this.addressName = res.data[0].address[0].address_name
-        this.addressMobile = res.data[0].address[0].address_mobile
-        this.addressDetail= res.data[0].address[0].address
-        return res.data[0].address[0].addressId
+    this.$store.dispatch("orderQry",{order_id:this.orderId,pageNum:10,pageSize:1}).then(res=>{
+      // console.log(res.data.data.result[0].)
+      if(res.data.data.result[0].cartList.length){
+        this.allNum = res.data.data.result[0].cartList.length
+        this.list = res.data.data.result[0].cartList;
+        this.allPay = res.data.data.result[0].payMoney;
+        this.bookSrc = res.data.data.result[0].cartList[0].bookList[0].picture
+        this.addressName = res.data.data.result[0].address[0].address_name
+        this.addressMobile = res.data.data.result[0].address[0].address_mobile
+        this.addressDetail= res.data.data.result[0].address[0].address
+        return res.data.data.result[0].address[0].addressId
       }
     }).then(resData=>{
-      this.$store.dispatch("addressSelect").then(res=>{
-        for (var i = 0; i < res.data.data.length; i++) {
-          if(res.data.data[i].addressId == resData){
-            res.data.data[i].isChose = true;
-            this.addressId = res.data.data[i].addressId
+      this.$store.dispatch("addressSelect",{pageNum:10,pageSize:1}).then(res=>{
+        for (var i = 0; i < res.data.data.result[0].length; i++) {
+          if(res.data.data.result[i].addressId == resData){
+            res.data.data.result[i].isChose = true;
+            this.addressId = res.data.data.result[i].addressId
           }else{
-            res.data.data[i].isChose = false;
+            res.data.data.result[i].isChose = false;
           }
 
         }
 
-        this.addressList = res.data.data;
+        this.addressList = res.data.data.result;
       })
     })
 
@@ -251,31 +251,30 @@ export default {
 
     },
     init(){
-      this.$store.dispatch("orderQry",{order_id:this.orderId}).then(res=>{
-        console.log(res.data[0])
-        if(res.data[0].cartList.length){
-          this.allNum = res.data[0].cartList.length
-          this.list = res.data[0].cartList;
-          this.allPay = res.data[0].payMoney;
-          this.bookSrc = res.data[0].cartList[0].bookList[0].picture
-          this.addressName = res.data[0].address[0].address_name
-          this.addressMobile = res.data[0].address[0].address_mobile
-          this.addressDetail= res.data[0].address[0].address
-          return res.data[0].address[0].addressId
+      this.$store.dispatch("orderQry",{order_id:this.orderId,pageNum:10,pageSize:1}).then(res=>{
+        if(res.data.data.result[0].cartList.length){
+          this.allNum = res.data.data.result[0].cartList.length
+          this.list = res.data.data.result[0].cartList;
+          this.allPay = res.data.data.result[0].payMoney;
+          this.bookSrc = res.data.data.result[0].cartList[0].bookList[0].picture
+          this.addressName = res.data.data.result[0].address[0].address_name
+          this.addressMobile = res.data.data.result[0].address[0].address_mobile
+          this.addressDetail= res.data.data.result[0].address[0].address
+          return res.data.data.result[0].address[0].addressId
         }
       }).then(resData=>{
-        this.$store.dispatch("addressSelect").then(res=>{
-          for (var i = 0; i < res.data.data.length; i++) {
-            if(res.data.data[i].addressId == resData){
-              res.data.data[i].isChose = true;
-              this.addressId = res.data.data[i].addressId
+        this.$store.dispatch("addressSelect",{pageNum:10,pageSize:1}).then(res=>{
+          for (var i = 0; i < res.data.data.result[0].length; i++) {
+            if(res.data.data.result[i].addressId == resData){
+              res.data.data.result[i].isChose = true;
+              this.addressId = res.data.data.result[i].addressId
             }else{
-              res.data.data[i].isChose = false;
+              res.data.data.result[i].isChose = false;
             }
 
           }
 
-          this.addressList = res.data.data;
+          this.addressList = res.data.data.result;
         })
       })
     },

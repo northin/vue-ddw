@@ -23,9 +23,9 @@
                       <check-icon :value.sync="item.isChose" @click.native="chose(index)"></check-icon>
                     </div>
                      <div class="" @click="toDetail(item.bookList[0].book_id)">
-                       <img :src="'http://localhost:8081/book/download?filename='+item.bookList[0].picture" class="content-img" alt="" style="">
+                       <img :src="srcPort+item.bookList[0].picture" class="content-img" alt="" style="">
                      </div>
-                     <div class="" :style="'width: 55%;text-align: left;'+(!item.isEdit?'padding-left: 28px;':'padding-right: 28px;')">
+                     <div class="" :style="'width: 58%;text-align: left;'+(!item.isEdit?'padding-left: 28px;':'padding-right: 11px;')">
                        <div class=""  v-if=(!item.isEdit) @click="toDetail(item.bookList[0].book_id)" >
                          {{ item.bookList[0].book_name }}
                        </div>
@@ -71,6 +71,7 @@
 </template>
 
 <script>
+import config from '../config/config'
 import { CheckIcon, XHeader,Swipeout,XNumber, SwipeoutItem, SwipeoutButton ,XButton} from 'vux'
 import myfooter from '../components/myfooter.vue'
 export default {
@@ -99,27 +100,48 @@ export default {
       }
     })
   },
+  computed:{
+    srcPort:function(){
+      return config.url+"/book/download?filename="
+    }
+  },
   methods:{
     order(){
       if(this.choseCartId.length){
-        this.$store.dispatch("addressSelect").then(res => {
-          return res.data.data.length == 0?null:res.data.data[0].addressId;
+        this.$store.dispatch("addressSelect",{pageNum:10,pageSize:1}).then(res => {
+
+          return res.data.data.result.length == 0?null:res.data.data.result[0].addressId;
         }).then(res=>{
-          this.$store.dispatch("orderInsert",{payMoney:this.allPay,address_id:res,cart_id:this.choseCartId}).then(res=>{
-            if(!res.data.errorCode){
-              let order_id = res.data.data
-              console.log(order_id)
-              this.$router.push('/order/'+order_id);
-            }else{
-              this.$vux.alert.show({
-               title: '下单失败',
-               onShow () {
-               },
-               onHide () {
-               }
-              })
-            }
-          })
+          let self = this;
+          if(res){
+            this.$store.dispatch("orderInsert",{payMoney:this.allPay,address_id:res,cart_id:this.choseCartId}).then(res=>{
+
+              if(!res.data.errorCode){
+                let order_id = res.data.data
+                console.log(order_id)
+                this.$router.push('/order/'+order_id);
+              }else{
+                this.$vux.alert.show({
+                 title: '下单失败',
+                 onShow () {
+                 },
+                 onHide () {
+                 }
+                })
+              }
+            })
+          }else{
+            this.$vux.alert.show({
+             title: '请先去添加收货地址',
+             onShow () {
+
+             },
+             onHide () {
+               self.$router.push('/setAddress');
+             }
+            })
+          }
+
         })
 
       }
@@ -289,7 +311,7 @@ export default {
   justify-content: space-between;
   width: 100vw;
   position: absolute;
-  top: 86vh;
+  bottom: 50px;
   height: 40px;
   line-height: 40px;
   border-top: 1px solid #ccc;
