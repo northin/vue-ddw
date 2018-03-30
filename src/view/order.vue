@@ -25,7 +25,7 @@
         </div>
         <div class="orderBookRight">
           <div class="">
-            <div>¥{{ allPay }}</div>
+            <div>¥{{ allPay | toMoney }}</div>
             <div>共{{ allNum }}件</div>
           </div>
           <div class="" style="line-height: 10vh;height: 10vh;padding-left:10px;">
@@ -44,7 +44,7 @@
 
     <div class="orderFooter">
       <div class="">
-        实付：¥{{ allPay }}
+        实付：¥{{ allPay | toMoney }}
       </div>
       <div class="">
         <x-button class="order-btn" style="background-color:red;color:#fff;" @click.native="pay">
@@ -108,7 +108,7 @@
                             {{ item.bookList[0].book_name }}
                           </div>
                           <div class="" style="color:red">
-                            ¥ <span>{{ item.bookList[0].price }}</span>
+                            ¥ <span>{{ item.bookList[0].price | toMoney }}</span>
                           </div>
                           <div>
                             *{{ item.num }}
@@ -121,10 +121,10 @@
 
             <div class="orderDetailFoot">
               <span>商品金额</span>
-              <span>¥{{ allPay }}</span>
+              <span>¥{{ allPay | toMoney }}</span>
             </div>
             <div class="" style="text-align:right;padding-right:10px">
-              <span>店铺合计: ¥{{ allPay }}</span>
+              <span>店铺合计: ¥{{ allPay | toMoney }}</span>
             </div>
           </div>
         </div>
@@ -147,8 +147,10 @@
 
 <script>
 import config from '../config/config'
+import mixin from '../util/myMinix'
 import { TransferDom, Popup,XHeader,XButton,Group,XInput,Confirm,Cell,CheckIcon} from 'vux'
 export default {
+  mixins: [mixin],
   directives: {
     TransferDom
   },
@@ -182,9 +184,6 @@ export default {
   computed:{
     orderId:function(){
       return this.$route.params.order_id
-    },
-    srcPort:function(){
-      return config.url+"/book/download?filename="
     }
   },
   created(){

@@ -30,7 +30,7 @@
                          {{ item.bookList[0].book_name }}
                        </div>
                        <div class=""  v-if=(!item.isEdit) @click="toDetail(item.bookList[0].book_id)" >
-                         ¥ <span>{{ item.bookList[0].price }}</span>
+                         ¥ <span>{{ item.bookList[0].price | toMoney }}</span>
                        </div>
                        <div v-if=(!item.isEdit)>
                          *{{ item.num }}
@@ -61,7 +61,7 @@
     </div>
     <div class="buy-div" style="display:flex">
       <check-icon :value.sync="all" @click.native="allChose" style="width:40%;text-align:left">全选</check-icon>
-      <span>合计：</span><span>¥{{ allPay }}</span>
+      <span>合计：</span><span>¥{{ allPay | toMoney }}</span>
       <x-button class="buy-btn" style="" @click.native="order">
         结算（{{ num }}）
       </x-button>
@@ -71,11 +71,12 @@
 </template>
 
 <script>
-import config from '../config/config'
+import mixin from '../util/myMinix'
 import { CheckIcon, XHeader,Swipeout,XNumber, SwipeoutItem, SwipeoutButton ,XButton} from 'vux'
 import myfooter from '../components/myfooter.vue'
 export default {
   name: 'index',
+  mixins: [mixin],
   data () {
     return {
       msg: 'index',
@@ -100,11 +101,11 @@ export default {
       }
     })
   },
-  computed:{
-    srcPort:function(){
-      return config.url+"/book/download?filename="
-    }
-  },
+  // computed:{
+  //   srcPort:function(){
+  //     return config.url+"/book/download?filename="
+  //   }
+  // },
   methods:{
     order(){
       if(this.choseCartId.length){

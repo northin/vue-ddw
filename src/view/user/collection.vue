@@ -28,7 +28,7 @@
                          {{ item.book_name }}
                        </div>
                        <div class="">
-                         ¥ <span>{{ item.price }}</span>
+                         ¥ <span>{{ item.price | toMoney }}</span>
                        </div>
                      </div>
                      <div class="" >
@@ -49,20 +49,22 @@
 </template>
 
 <script>
-import config from '../../config/config'
+// import config from '../../config/config'
+import mixin from '../../util/myMinix'
 import { XHeader,Swipeout, SwipeoutItem, SwipeoutButton, XButton } from 'vux'
 export default {
+  mixins: [mixin],
   name: 'myCollection',
   data(){
     return {
       list:[]
     }
   },
-  computed:{
-    srcPort:function(){
-      return config.url+"/book/download?filename="
-    }
-  },
+  // computed:{
+  //   srcPort:function(){
+  //     return config.url+"/book/download?filename="
+  //   }
+  // },
   components:{
     XHeader,
     Swipeout,

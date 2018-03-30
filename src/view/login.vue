@@ -71,26 +71,28 @@ export default {
       data.password = this.pass
       this.$store.dispatch("login",data).then(res => {
           if(!res.data.errorCode){
-            const self = this;
-            this.$vux.alert.show({
-             title: '登录成功',
-             content:res.data.errorMessage,
-             onShow () {
-             },
-             onHide () {
-               self.$router.push('/index')
-             }
-            })
+            // const self = this;
+            this.$toast('登录成功',()=>this.$router.push('/user'))
+            // this.$vux.alert.show({
+            //  title: '登录成功',
+            //  content:res.data.errorMessage,
+            //  onShow () {
+            //  },
+            //  onHide () {
+            //    self.$router.push('/index')
+            //  }
+            // })
           }else{
-            this.$vux.alert.show({
-             title: '登录失败',
-             content:res.data.errorMessage,
-             onShow () {
-             },
-             onHide () {
-
-             }
-           })
+            this.$toast('登录失败')
+          //   this.$vux.alert.show({
+          //    title: '登录失败',
+          //    content:res.data.errorMessage,
+          //    onShow () {
+          //    },
+          //    onHide () {
+           //
+          //    }
+          //  })
           }
 
       })

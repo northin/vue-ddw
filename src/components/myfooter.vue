@@ -1,7 +1,7 @@
 <template>
   <div class="footer">
     <ul class="myfooter">
-      <li :class="(isActive == 'index'? 'active':'')" @click="goto('index')">
+      <li :class="((isActive == 'index' || isActive == '')? 'active':'')" @click="goto('index')">
         <i class="fa fa-home" aria-hidden="true"></i>
         <div>首页</div>
       </li>

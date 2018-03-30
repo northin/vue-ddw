@@ -64,17 +64,19 @@ export default {
 
       this.$store.dispatch("register",data).then(res => {
           if(!res.data.errorCode){
-            const self = this;
-            this.$vux.alert.show({
-             title: '注册成功',
-             content:res.data.errorMessage,
-             onShow () {
-             },
-             onHide () {
-               self.$router.push('/login')
-             }
-            })
+            this.$toast('注册成功',()=>this.$router.push('/login'))
+            // const self = this;
+            // this.$vux.alert.show({
+            //  title: '注册成功',
+            //  content:res.data.errorMessage,
+            //  onShow () {
+            //  },
+            //  onHide () {
+            //    self.$router.push('/login')
+            //  }
+            // })
           }else{
+            // this.$toast('注册失败')
             this.$vux.alert.show({
              title: '注册失败',
              content:res.data.errorMessage,

@@ -6,7 +6,7 @@
     </x-header>
     <div class="">
       <group>
-        <x-input :title=(setTitle.substr(2)) name="" :placeholder="('请输入'+setTitle.substr(2))" v-model="saveData" :is-type="setType"></x-input>
+        <x-input :title=(setTitle.substr(2)) required name="" :placeholder="('请输入'+setTitle.substr(2))" v-model="saveData" :is-type="setType"></x-input>
       </group>
     </div>
     <confirm v-model="show"

@@ -18,7 +18,7 @@
               </div>
               <div class="bookDetailPrice">
                 <div class="">
-                  ¥{{ itemBook.bookList[0].price }}
+                  ¥{{ itemBook.bookList[0].price | toMoney }}
                 </div>
                 <div class="">
                   *{{  itemBook.num  }}
@@ -27,7 +27,7 @@
             </div>
             <div class="bookFooter">
               <span>共{{ item.cartList.length }}件商品</span>
-              <span>共¥{{ item.payMoney }}</span>
+              <span>共¥{{ item.payMoney | toMoney }}</span>
             </div>
             <div class="bookBtn" style="display:flex;justify-content: flex-end;margin-bottom:10px;">
               <x-button v-if="status==0"  @click.native="goCancle(item.order_id)" style="width:30%;font-size:12px;margin:0">取消订单</x-button>
@@ -51,9 +51,10 @@
 </template>
 
 <script>
-import config from '../config/config'
+import mixin from '../util/myMinix'
 import { CheckIcon, XHeader,Swiper,XNumber, SwiperItem ,XButton,Tab, TabItem,Confirm} from 'vux'
 export default {
+  mixins: [mixin],
   data () {
     return {
       msg: 'index',
@@ -66,11 +67,11 @@ export default {
       currentOrder:'',
     }
   },
-  computed:{
-    srcPort:function(){
-      return config.url+"/book/download?filename="
-    }
-  },
+  // computed:{
+  //   srcPort:function(){
+  //     return config.url+"/book/download?filename="
+  //   }
+  // },
   created(){
     let order_status = this.$route.params.order_status
     this.index = order_status - 1;

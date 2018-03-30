@@ -25,7 +25,7 @@
             <div class="">
               <h4 style="text-align:left;">{{ item.book_name }}</h4>
               <p class="li-author">({{ item.country }}) {{ item.author }}</p>
-              <p class="li-price">¥{{ item.price }}</p>
+              <p class="li-price">¥{{ item.price | toMoney}}</p>
               <p class="li-comment">100.0%好评（2022767人）</p>
             </div>
           </div>
@@ -36,9 +36,10 @@
 </template>
 
 <script>
-import config from '../config/config'
+import mixin from '../util/myMinix'
 import { Swiper,Search, GroupTitle, SwiperItem, XButton, Divider } from 'vux'
 export default {
+  mixins: [mixin],
   data(){
     return {
       value:'',
@@ -55,11 +56,11 @@ export default {
     Divider,
     Search
   },
-  computed:{
-    srcPort:function(){
-      return config.url+"/book/download?filename="
-    }
-  },
+  // computed:{
+  //   srcPort:function(){
+  //     return config.url+"/book/download?filename="
+  //   }
+  // },
   created(){
     let searchData = this.$route.query.data
     let style_id = this.$route.query.dataId;

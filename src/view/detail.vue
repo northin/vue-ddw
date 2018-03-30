@@ -20,7 +20,7 @@
               {{ bookName }}
             </div>
             <div class="" style="width:70%;text-align:left;padding-left:10px;;padding-bottom:10px"">
-              ¥{{ price }}
+              ¥{{ price | toMoney }}
             </div>
             <div class="comment">
               <div class="" style="width:70%;text-align:left;padding-left:10px">
@@ -33,7 +33,7 @@
             </div>
 
             <group label-width="5em" >
-               <cell primary="content" title="作者" is-link @click.native="setIcon" >
+               <cell primary="content" title="作者" is-link @click.native="setIcon(author)" >
                  <div  class="" style="display:flex;justify-content: space-between;">
                    <div class="" >
                      {{ author }}
@@ -48,9 +48,6 @@
                  <div  class="" style="display:flex;justify-content: space-between;">
                    <div class="" style="font-size:13px;">
                       {{ compony }}{{ date }}
-                   </div>
-                   <div class="">
-                     查看作品
                    </div>
                  </div>
 
@@ -165,9 +162,10 @@
 </template>
 
 <script>
-import config from '../config/config'
+import mixin from '../util/myMinix'
 import { CheckIcon, XHeader,Tab, TabItem,Swiper, SwiperItem, Rater,Group,Cell,XButton,Badge,FormPreview} from 'vux'
 export default {
+  mixins: [mixin],
   data(){
     return {
       index:1,
@@ -215,11 +213,11 @@ export default {
       }]
     }
   },
-  computed:{
-    srcPort:function(){
-      return config.url+"/book/download?filename="
-    }
-  },
+  //computed:{
+  //  srcPort:function(){
+  //    return config.url+"/book/download?filename="
+  //  }
+  //},
   created(){
     let id = this.$route.params.id
     this.$store.dispatch("bookById",{book_id:id}).then(res=>{
@@ -272,6 +270,9 @@ export default {
 
   },
   methods:{
+    setIcon(val){
+      this.$router.push('/searchDetail?data='+val.substr(val.indexOf(")")+1))
+    },
     linkCart(){
       this.$store.dispatch("isLogin").then(res=>{
         if(!res.data.errorCode){
